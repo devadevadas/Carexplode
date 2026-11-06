@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>APEX Motorsport — Anatomy of a Race Car</title>
+<meta name="description" content="Scroll to take a race car apart, piece by piece.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#07080a;--fg:#f4f1ee;--mut:#9b9aa0;--red:#e10600;--line:rgba(255,255,255,.12)}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:auto}
+body{background:var(--bg);color:var(--fg);font-family:Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+h1,h2,h3,.disp{font-family:"Barlow Condensed","Arial Narrow",sans-serif;text-transform:uppercase;letter-spacing:.02em}
+nav{position:fixed;inset:0 0 auto 0;z-index:30;display:flex;justify-content:space-between;align-items:center;padding:20px clamp(20px,4vw,56px);background:linear-gradient(#07080acc,transparent)}
+.logo{font:800 24px "Barlow Condensed",sans-serif;letter-spacing:.14em}.logo b{color:var(--red)}
+nav ul{display:flex;gap:32px;list-style:none;font-size:13px;letter-spacing:.14em;text-transform:uppercase}
+nav a{color:var(--fg);text-decoration:none;opacity:.75;transition:.2s}nav a:hover{opacity:1}
+.btn{display:inline-block;padding:14px 30px;background:var(--red);color:#fff;font:700 15px "Barlow Condensed",sans-serif;letter-spacing:.16em;text-transform:uppercase;text-decoration:none;transition:.2s}.btn:hover{background:#ff2a1f;transform:translateY(-2px)}
+/* hero */
+#hero{position:relative;height:650vh}
+.stick{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;background:var(--bg)}
+#cv{position:absolute;inset:0;width:100%;height:100%;display:block}
+.stick::after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at 50% 55%,transparent 55%,#07080a99 100%),linear-gradient(#07080a88,transparent 22%,transparent 70%,#07080acc)}
+.stage{position:absolute;z-index:5;opacity:0;pointer-events:none;max-width:min(520px,86vw);will-change:opacity,transform}
+.stage .k{font:600 13px Inter;letter-spacing:.3em;color:var(--red);text-transform:uppercase;margin-bottom:14px}
+.stage h2{font-size:clamp(40px,6vw,92px);line-height:.92;font-weight:800}
+.stage p{margin-top:18px;color:#d3d1d4;font-size:clamp(14px,1.2vw,17px);line-height:1.6;max-width:420px}
+.s0{left:clamp(20px,5vw,80px);top:clamp(90px,17vh,170px)}.s0 h2{font-size:clamp(52px,9vw,150px)}
+.s1{left:clamp(20px,5vw,80px);bottom:12vh}
+.s2{right:clamp(20px,5vw,80px);top:clamp(90px,16vh,160px);text-align:right}.s2 p{margin-left:auto}
+.s3{left:50%;bottom:9vh;text-align:center;transform:translateX(-50%)}.s3 p{margin-inline:auto}.s3 .btn{pointer-events:auto;margin-top:26px}
+.hud{position:absolute;z-index:6;right:clamp(20px,4vw,56px);bottom:30px;font:600 12px Inter;letter-spacing:.2em;color:var(--mut);text-align:right}
+.bar{width:140px;height:2px;background:var(--line);margin:10px 0 0 auto}.bar i{display:block;height:100%;width:0;background:var(--red)}
+.hint{position:absolute;z-index:6;left:50%;bottom:26px;transform:translateX(-50%);font:600 11px Inter;letter-spacing:.3em;text-transform:uppercase;color:var(--mut);transition:opacity .3s}
+.hint::after{content:"";display:block;width:1px;height:34px;margin:10px auto 0;background:linear-gradient(var(--fg),transparent);animation:dr 1.6s infinite}
+@keyframes dr{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+#loader{position:fixed;inset:0;z-index:50;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;transition:opacity .7s,visibility .7s}
+#loader.done{opacity:0;visibility:hidden}
+#loader .n{font:800 64px "Barlow Condensed";letter-spacing:.06em}#loader .t{width:min(280px,70vw);height:2px;background:var(--line)}#loader .t i{display:block;height:100%;width:0;background:var(--red)}
+#loader small{color:var(--mut);letter-spacing:.3em;font-size:11px;text-transform:uppercase}
+/* content */
+section.c{padding:clamp(80px,12vw,160px) clamp(20px,6vw,100px);max-width:1400px;margin:auto}
+.eyebrow{color:var(--red);font:600 13px Inter;letter-spacing:.3em;text-transform:uppercase;margin-bottom:16px}
+.c h2{font-size:clamp(38px,5.5vw,80px);line-height:.95;font-weight:800;max-width:900px}
+.specs{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1px;margin-top:64px;background:var(--line);border:1px solid var(--line)}
+.specs div{background:var(--bg);padding:34px 28px}
+.specs b{display:block;font:800 clamp(40px,4.5vw,64px) "Barlow Condensed";line-height:1}.specs b em{font-size:.4em;font-style:normal;color:var(--red);margin-left:4px}
+.specs span{display:block;margin-top:10px;font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--mut)}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;margin-top:56px}
+.card{border:1px solid var(--line);padding:34px;background:linear-gradient(160deg,#14161a,#0a0b0d);transition:.3s}.card:hover{border-color:var(--red);transform:translateY(-4px)}
+.card i{font:700 14px "Barlow Condensed";color:var(--red);letter-spacing:.2em;font-style:normal}.card h3{font-size:30px;margin:14px 0 10px}.card p{color:var(--mut);line-height:1.65;font-size:15px}
+.cta{text-align:center;border-top:1px solid var(--line)}.cta h2{margin:auto}.cta .btn{margin-top:36px}
+footer{padding:36px clamp(20px,6vw,100px);border-top:1px solid var(--line);display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;color:var(--mut);font-size:12px;letter-spacing:.12em;text-transform:uppercase}
+@media(max-width:720px){nav ul{display:none}.s2{text-align:left;right:auto;left:20px}.s2 p{margin-left:0}.hud{display:none}}
+@media(prefers-reduced-motion:reduce){.hint::after{animation:none}}
+</style>
+</head>
+<body>
+<div id="loader"><div class="n">APEX<span style="color:var(--red)">.</span></div><div class="t"><i id="lb"></i></div><small id="lt">Loading 0%</small></div>
+<nav><div class="logo">APEX<b>.</b>MOTORSPORT</div><ul><li><a href="#hero">Anatomy</a></li><li><a href="#specs">Specs</a></li><li><a href="#tech">Technology</a></li><li><a href="#join">Contact</a></li></ul></nav>
+
+<header id="hero">
+ <div class="stick">
+  <canvas id="cv"></canvas>
+  <div class="stage s0"><div class="k">Season 2026</div><h2>Built to<br>be pushed</h2><p>Scroll to take the car apart, piece by piece.</p></div>
+  <div class="stage s1"><div class="k">01 — Bodywork</div><h2>Skin &amp;<br>aero</h2><p>Lightweight composite panels and a full-width rear wing, shaped for downforce and cooling.</p></div>
+  <div class="stage s2"><div class="k">02 — Chassis</div><h2>Rigid core,<br>raw power</h2><p>A roll-cage safety cell, race suspension and the engine laid bare in one clean view.</p></div>
+  <div class="stage s3"><div class="k">03 — Complete</div><h2>Every part.<br>One purpose.</h2><p>Nothing hidden, nothing wasted — engineered for the track.</p><a class="btn" href="#specs">Explore the machine</a></div>
+  <div class="hud"><div id="hf">FRAME 001 / 155</div><div class="bar"><i id="hb"></i></div></div>
+  <div class="hint" id="hint">Scroll</div>
+ </div>
+</header>
+
+<section class="c" id="specs">
+ <div class="eyebrow">Technical data</div><h2>Numbers that<br>matter on track</h2>
+ <!-- Replace these placeholder figures with your real specs -->
+ <div class="specs"><div><b>000<em>HP</em></b><span>Power output</span></div><div><b>0.0<em>S</em></b><span>0–100 km/h</span></div><div><b>000<em>KG</em></b><span>Dry weight</span></div><div><b>000<em>KM/H</em></b><span>Top speed</span></div></div>
+</section>
+
+<section class="c" id="tech" style="padding-top:0">
+ <div class="eyebrow">Technology</div><h2>Engineered<br>in every layer</h2>
+ <div class="cards">
+  <div class="card"><i>01</i><h3>Aerodynamics</h3><p>Sculpted bodywork and a high-mounted rear wing keep the car planted through the fastest corners.</p></div>
+  <div class="card"><i>02</i><h3>Chassis &amp; safety</h3><p>A reinforced roll-cage cell protects the driver while keeping weight low and stiffness high.</p></div>
+  <div class="card"><i>03</i><h3>Powertrain</h3><p>A compact engine package sits low and central for balance, response and serviceability.</p></div>
+ </div>
+</section>
+
+<section class="c cta" id="join"><div class="eyebrow">Join the grid</div><h2>See it in person<br>at the next round</h2><a class="btn" href="mailto:info@example.com">Get in touch</a></section>
+<footer><span>© 2026 APEX Motorsport</span><span>All rights reserved</span></footer>
+
+<script>
+(()=>{
+const N=155, SRC=i=>`frames/f${String(i+1).padStart(3,'0')}.jpg`;
+const hero=document.getElementById('hero'), cv=document.getElementById('cv'), ctx=cv.getContext('2d');
+const stages=[...document.querySelectorAll('.stage')], hf=document.getElementById('hf'), hb=document.getElementById('hb'), hint=document.getElementById('hint');
+const RANGES=[[0,.03,.12,.20],[.24,.32,.44,.52],[.54,.62,.74,.82],[.86,.92,1.1,1.2]]; // fade in start, full, full end, fade out end
+const imgs=new Array(N), bmp=new Map(), pend=new Set();
+const MAXW=2880, BACK=8, AHEAD=16, PAR=4;
+let cur=0,target=0,last=0,vw=0,vh=0,dw=0,dh=0,dx=0,dy=0,iw=3840,ih=2133,ready=false,dirty=true,fit=true;
+
+/* ---------- load all frames (progress) ---------- */
+let loaded=0; const lb=document.getElementById('lb'), lt=document.getElementById('lt'), loader=document.getElementById('loader');
+function load(i){return new Promise(r=>{const im=new Image();im.decoding='async';im.onload=im.onerror=()=>{loaded++;const p=Math.round(loaded/N*100);lb.style.width=p+'%';lt.textContent='Loading '+p+'%';r()};im.src=SRC(i);imgs[i]=im})}
+(async()=>{
+  const q=[...Array(N).keys()];
+  await Promise.all(Array.from({length:6},async()=>{while(q.length)await load(q.shift())}));
+  iw=imgs[0].naturalWidth||iw; ih=imgs[0].naturalHeight||ih;
+  resize(); await need(0,true); ready=true; dirty=true; onScroll(); loader.classList.add('done'); requestAnimationFrame(tick);
+})();
+
+/* ---------- sizing: cover on landscape, contain on portrait ---------- */
+function resize(){
+  const dpr=Math.min(window.devicePixelRatio||1,2);
+  vw=innerWidth; vh=innerHeight;
+  cv.width=Math.round(vw*dpr); cv.height=Math.round(vh*dpr);
+  const cw=cv.width, ch=cv.height, ar=iw/ih, vr=cw/ch;
+  if(vr>=1.15){ if(vr>ar){dw=cw;dh=cw/ar}else{dh=ch;dw=ch*ar} }   // cover
+  else { dw=cw; dh=cw/ar; dw*=1.0; }                                // contain (portrait)
+  dx=(cw-dw)/2; dy=(ch-dh)/2+(vr<1.15?-ch*.02:0);
+  for(const b of bmp.values())b.close&&b.close(); bmp.clear(); pend.clear(); dirty=true;
+}
+addEventListener('resize',()=>{if(ready){resize();need(Math.round(cur),true)}else resize()});
+
+/* ---------- sliding window of pre-decoded, pre-scaled bitmaps ---------- */
+function opts(){const s=Math.min(1,MAXW/dw);return {resizeWidth:Math.round(dw*s),resizeHeight:Math.round(dh*s),resizeQuality:'high'}}
+function mk(i){
+  if(bmp.has(i)||pend.has(i)||i<0||i>=N)return Promise.resolve();
+  pend.add(i);const o=opts();
+  return createImageBitmap(imgs[i],o).catch(()=>createImageBitmap(imgs[i])).then(b=>{pend.delete(i);const c=Math.round(cur);
+    if(i<c-BACK-2||i>c+AHEAD+2){b.close();return}bmp.set(i,b);dirty=true}).catch(()=>pend.delete(i));
+}
+async function need(c,wait){
+  const dir=target>=cur?1:-1, list=[];
+  for(let d=0;d<=AHEAD;d++){list.push(c+d*dir);if(d<=BACK)list.push(c-d*dir)}
+  const todo=list.filter(i=>i>=0&&i<N&&!bmp.has(i)&&!pend.has(i)).slice(0,PAR*3);
+  if(wait){await Promise.all(todo.slice(0,PAR*2).map(mk))}else{for(const i of todo){if(pend.size>=PAR)break;mk(i)}}
+  for(const [k,b] of bmp){if(k<c-BACK-2||k>c+AHEAD+2){b.close&&b.close();bmp.delete(k)}}
+}
+function nearest(i){ if(bmp.has(i))return bmp.get(i); for(let d=1;d<N;d++){if(bmp.has(i-d))return bmp.get(i-d);if(bmp.has(i+d))return bmp.get(i+d)} return null }
+
+/* ---------- draw with sub-frame cross-blend for silky motion ---------- */
+function draw(){
+  const f=Math.min(Math.max(cur,0),N-1), i0=Math.floor(f), fr=f-i0;
+  const a=nearest(i0); if(!a)return;
+  ctx.globalAlpha=1; ctx.imageSmoothingQuality='high';
+  ctx.drawImage(a,dx,dy,dw,dh);
+  if(fr>.02&&i0+1<N&&bmp.has(i0+1)){ctx.globalAlpha=fr;ctx.drawImage(bmp.get(i0+1),dx,dy,dw,dh);ctx.globalAlpha=1}
+}
+
+/* ---------- scroll -> progress ---------- */
+let prog=0;
+function onScroll(){
+  const r=hero.getBoundingClientRect(), span=hero.offsetHeight-innerHeight;
+  prog=Math.min(Math.max(-r.top/span,0),1);
+  target=Math.min(prog/.9,1)*(N-1);     // last 10% of scroll holds the final exploded frame
+  hint.style.opacity=prog>.02?0:1; ui();
+}
+function ui(){
+  stages.forEach((el,k)=>{const [a,b,c,d]=RANGES[k];let o=0;
+    if(prog>=a&&prog<b)o=(prog-a)/(b-a);else if(prog>=b&&prog<=c)o=1;else if(prog>c&&prog<d)o=1-(prog-c)/(d-c);
+    el.style.opacity=o.toFixed(3);const t=(1-o)*(prog<b?24:-24);
+    el.style.transform=(k==3?'translateX(-50%) ':'')+`translateY(${t.toFixed(1)}px)`;
+    el.style.pointerEvents=o>.6?'auto':'none'});
+  hf.textContent='FRAME '+String(Math.round(cur)+1).padStart(3,'0')+' / '+N; hb.style.width=(prog*100)+'%';
+}
+addEventListener('scroll',onScroll,{passive:true});
+
+/* ---------- render loop: frame-rate independent easing ---------- */
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+function tick(t){
+  const dt=Math.min((t-last)/1000||.016,.05); last=t;
+  const diff=target-cur;
+  if(Math.abs(diff)>.001){cur+=reduce?diff:diff*(1-Math.exp(-dt*10)); dirty=true; ui()}
+  else if(cur!==target){cur=target;dirty=true}
+  need(Math.round(cur),false);
+  if(dirty){draw();dirty=false}
+  requestAnimationFrame(tick);
+}
+})();
+</script>
+</body>
+</html>
